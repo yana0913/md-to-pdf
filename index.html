@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="将 Markdown 文档排版为双栏 A4 页面，并导出带页码的 PDF。"
+    />
+    <title>纸间 · Markdown 双栏排版</title>
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231e293b'/%3E%3Cpath d='M8 7h16v18H8z' fill='%23fff'/%3E%3Cpath d='M11 11h4v10h-4zm6 0h4v10h-4z' fill='%23d95d39'/%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="workspace-panel" aria-label="Markdown 编辑区">
+        <header class="brand-row">
+          <div class="brand-mark" aria-hidden="true"><span></span><span></span></div>
+          <div>
+            <h1>纸间</h1>
+            <p>Markdown 双栏排版</p>
+          </div>
+        </header>
+
+        <section class="file-card" id="dropZone" aria-label="上传 Markdown 文档">
+          <input id="fileInput" type="file" accept=".md,.markdown,text/markdown,text/plain" hidden />
+          <div class="file-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M7 3.5h7l3 3V20.5H7z" stroke="currentColor" stroke-width="1.5" />
+              <path d="M14 3.5v3h3M10 11h4M10 14h4M10 17h3" stroke="currentColor" stroke-width="1.5" />
+            </svg>
+          </div>
+          <div class="file-copy">
+            <strong id="fileName">拖入 Markdown 文档</strong>
+            <span>或点击选择 .md 文件</span>
+          </div>
+          <button class="secondary-button" id="chooseFile" type="button">选择文件</button>
+        </section>
+
+        <div class="editor-heading">
+          <label for="markdownInput">文档内容</label>
+          <span id="wordCount">0 字</span>
+        </div>
+        <textarea id="markdownInput" spellcheck="false" aria-label="Markdown 内容"></textarea>
+
+        <div class="spec-strip" aria-label="页面规格">
+          <div><span>纸张</span><strong>A4</strong></div>
+          <div><span>版式</span><strong>双栏</strong></div>
+          <div><span>边距</span><strong>3 cm</strong></div>
+          <div><span>字体</span><strong>宋体</strong></div>
+        </div>
+
+        <button class="export-button" id="exportPdf" type="button">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 3v11m0 0 4-4m-4 4-4-4M5 16v4h14v-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          导出 PDF
+        </button>
+        <p class="print-hint">在打印窗口中选择“另存为 PDF”，纸张选 A4、缩放 100%，并关闭浏览器页眉页脚。</p>
+      </aside>
+
+      <main class="preview-panel">
+        <header class="preview-toolbar">
+          <div>
+            <span class="eyebrow">排版预览</span>
+            <strong id="pageStatus">正在生成…</strong>
+          </div>
+          <div class="zoom-control" aria-label="预览缩放">
+            <button type="button" id="zoomOut" aria-label="缩小预览">−</button>
+            <span id="zoomValue">75%</span>
+            <button type="button" id="zoomIn" aria-label="放大预览">＋</button>
+          </div>
+        </header>
+        <div class="preview-scroll" id="previewScroll">
+          <div class="pages" id="pages" aria-live="polite"></div>
+        </div>
+      </main>
+    </div>
+
+    <div id="flowMeasure" class="flow-measure" aria-hidden="true"></div>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="app.js"></script>
+  </body>
+</html>

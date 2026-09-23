@@ -1,0 +1,193 @@
+:root {
+  color-scheme: light;
+  --ink: #172033;
+  --muted: #697386;
+  --line: #dfe3e8;
+  --paper: #ffffff;
+  --canvas: #e9ebee;
+  --panel: #f8f9fb;
+  --accent: #d95d39;
+  --accent-dark: #b94526;
+  --page-scale: 0.75;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body { margin: 0; min-height: 100%; }
+
+body { color: var(--ink); background: var(--canvas); }
+
+button, textarea, input { font: inherit; }
+button { cursor: pointer; }
+
+.app-shell { min-height: 100vh; display: grid; grid-template-columns: minmax(330px, 410px) 1fr; }
+
+.workspace-panel {
+  position: relative;
+  z-index: 2;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 28px;
+  background: var(--panel);
+  border-right: 1px solid #d6dae0;
+  box-shadow: 8px 0 30px rgba(28, 38, 54, 0.05);
+}
+
+.brand-row { display: flex; align-items: center; gap: 12px; }
+.brand-row h1 { margin: 0; font-family: SimSun, "Songti SC", serif; font-size: 1.35rem; letter-spacing: 0.12em; }
+.brand-row p { margin: 3px 0 0; color: var(--muted); font-size: 0.8rem; }
+.brand-mark { width: 38px; height: 38px; display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 8px; border-radius: 10px; background: var(--ink); }
+.brand-mark span { border-radius: 1px; background: #fff; }
+.brand-mark span:last-child { background: var(--accent); }
+
+.file-card {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  border: 1px dashed #bbc2cc;
+  border-radius: 12px;
+  background: #fff;
+  transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
+}
+.file-card.dragging { border-color: var(--accent); background: #fff7f3; transform: translateY(-1px); }
+.file-icon { width: 40px; height: 40px; display: grid; place-items: center; border-radius: 9px; color: var(--accent); background: #fff0ea; }
+.file-icon svg { width: 23px; height: 23px; }
+.file-copy { min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.file-copy strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.9rem; }
+.file-copy span { color: var(--muted); font-size: 0.76rem; }
+.secondary-button { padding: 8px 11px; border: 1px solid var(--line); border-radius: 8px; color: var(--ink); background: #fff; font-size: 0.8rem; font-weight: 650; }
+.secondary-button:hover { border-color: #adb5c1; background: #f5f6f8; }
+
+.editor-heading { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: -10px; }
+.editor-heading label { font-size: 0.88rem; font-weight: 700; }
+.editor-heading span { color: var(--muted); font-size: 0.76rem; }
+
+#markdownInput {
+  flex: 1;
+  min-height: 280px;
+  resize: none;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  outline: none;
+  color: #283244;
+  background: #fff;
+  box-shadow: inset 0 1px 2px rgba(16, 24, 40, 0.03);
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 0.84rem;
+  line-height: 1.65;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+#markdownInput:focus { border-color: #8f99a7; box-shadow: 0 0 0 3px rgba(23, 32, 51, 0.07); }
+
+.spec-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 7px; }
+.spec-strip div { padding: 9px 6px; border-radius: 8px; text-align: center; background: #eef0f3; }
+.spec-strip span, .spec-strip strong { display: block; }
+.spec-strip span { margin-bottom: 3px; color: var(--muted); font-size: 0.66rem; }
+.spec-strip strong { font-size: 0.75rem; }
+
+.export-button { width: 100%; display: flex; align-items: center; justify-content: center; gap: 9px; padding: 13px 18px; border: 0; border-radius: 10px; color: white; background: var(--ink); font-weight: 750; letter-spacing: 0.02em; box-shadow: 0 8px 20px rgba(23, 32, 51, 0.16); transition: background 160ms ease, transform 160ms ease; }
+.export-button svg { width: 19px; height: 19px; }
+.export-button:hover { background: #26344d; transform: translateY(-1px); }
+.export-button:active { transform: translateY(0); }
+.print-hint { margin: -9px 2px 0; color: var(--muted); font-size: 0.7rem; line-height: 1.5; }
+
+.preview-panel { min-width: 0; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+.preview-toolbar { height: 76px; flex: 0 0 76px; display: flex; align-items: center; justify-content: space-between; padding: 0 28px; border-bottom: 1px solid rgba(107, 114, 128, 0.22); background: rgba(240, 242, 245, 0.92); backdrop-filter: blur(12px); }
+.preview-toolbar > div:first-child { display: flex; align-items: baseline; gap: 12px; }
+.eyebrow { color: var(--muted); font-size: 0.72rem; font-weight: 750; letter-spacing: 0.14em; text-transform: uppercase; }
+#pageStatus { font-size: 0.9rem; }
+.zoom-control { display: grid; grid-template-columns: 34px 56px 34px; align-items: center; overflow: hidden; border: 1px solid #cfd4db; border-radius: 9px; background: #fff; }
+.zoom-control button { height: 32px; border: 0; color: #4b5563; background: #fff; font-size: 1.1rem; }
+.zoom-control button:hover { background: #f1f3f5; }
+.zoom-control span { text-align: center; color: #4b5563; font-size: 0.75rem; font-weight: 650; }
+
+.preview-scroll { flex: 1; overflow: auto; padding: 38px; }
+.pages { width: calc(210mm * var(--page-scale)); margin: 0 auto; }
+.page-wrap { width: calc(210mm * var(--page-scale)); height: calc(297mm * var(--page-scale)); margin-bottom: 32px; }
+.page {
+  position: relative;
+  width: 210mm;
+  height: 297mm;
+  overflow: hidden;
+  transform: scale(var(--page-scale));
+  transform-origin: top left;
+  color: #111;
+  background: var(--paper);
+  box-shadow: 0 18px 45px rgba(23, 32, 51, 0.18), 0 1px 2px rgba(23, 32, 51, 0.12);
+}
+.page-content { position: absolute; top: 30mm; left: 30mm; width: 150mm; height: 237mm; overflow: hidden; }
+.flow-viewport { width: 150mm; height: 237mm; overflow: hidden; }
+.page-number { position: absolute; bottom: 12mm; left: 0; width: 100%; text-align: center; color: #555; font-family: SimSun, "Songti SC", serif; font-size: 9pt; }
+
+.flow, .flow-measure {
+  width: 150mm;
+  height: 237mm;
+  column-width: 71mm;
+  column-gap: 8mm;
+  column-fill: auto;
+  overflow: visible;
+  color: #111;
+  font-family: SimSun, "Songti SC", STSong, serif;
+  font-size: 10.5pt;
+  line-height: 1.72;
+  text-align: justify;
+  overflow-wrap: break-word;
+}
+.flow-measure { position: fixed; top: -200vh; left: 0; visibility: hidden; pointer-events: none; }
+.flow > :first-child, .flow-measure > :first-child { margin-top: 0; }
+.flow h1, .flow-measure h1 { margin: 0 0 7mm; column-span: all; font-size: 22pt; line-height: 1.28; text-align: center; letter-spacing: 0.08em; break-after: avoid; }
+.flow h2, .flow-measure h2 { margin: 5mm 0 2.5mm; padding-bottom: 1.3mm; border-bottom: 0.35mm solid #222; font-size: 14pt; line-height: 1.35; text-align: left; break-after: avoid; }
+.flow h3, .flow-measure h3 { margin: 4mm 0 1.5mm; font-size: 11.5pt; line-height: 1.4; text-align: left; break-after: avoid; }
+.flow h4, .flow-measure h4 { margin: 3mm 0 1.5mm; font-size: 10.5pt; text-align: left; break-after: avoid; }
+.flow p, .flow-measure p { margin: 0 0 2.4mm; text-indent: 0; orphans: 2; widows: 2; }
+.flow ul, .flow ol, .flow-measure ul, .flow-measure ol { margin: 0 0 2.5mm; padding-left: 2em; }
+.flow li, .flow-measure li { margin-bottom: 1mm; padding-left: 0.2em; break-inside: avoid-column; }
+.flow blockquote, .flow-measure blockquote { margin: 3mm 0; padding: 1.5mm 0 1.5mm 4mm; border-left: 1mm solid #777; color: #444; break-inside: avoid-column; }
+.flow blockquote p, .flow-measure blockquote p { margin: 0; }
+.flow pre, .flow-measure pre { margin: 3mm 0; padding: 3mm; overflow: hidden; border: 0.3mm solid #ddd; border-radius: 1mm; background: #f5f5f5; font: 8.5pt/1.55 "SFMono-Regular", Consolas, monospace; white-space: pre-wrap; break-inside: avoid-column; text-align: left; }
+.flow code, .flow-measure code { padding: 0.2mm 0.7mm; border-radius: 0.6mm; background: #f1f1f1; font-family: "SFMono-Regular", Consolas, monospace; font-size: 0.88em; }
+.flow pre code, .flow-measure pre code { padding: 0; background: transparent; font-size: inherit; }
+.flow table, .flow-measure table { width: 100%; margin: 3mm 0; border-collapse: collapse; font-size: 9pt; break-inside: avoid-column; }
+.flow th, .flow td, .flow-measure th, .flow-measure td { padding: 1.2mm 1.5mm; border: 0.25mm solid #888; text-align: left; }
+.flow th, .flow-measure th { background: #eee; }
+.flow hr, .flow-measure hr { margin: 4mm 0; border: 0; border-top: 0.35mm solid #777; }
+.flow a, .flow-measure a { color: inherit; text-decoration-thickness: 0.2mm; text-underline-offset: 0.4mm; }
+.flow img, .flow-measure img { display: block; max-width: 100%; max-height: 85mm; margin: 3mm auto; object-fit: contain; break-inside: avoid-column; }
+
+.toast { position: fixed; left: 50%; bottom: 24px; z-index: 20; padding: 10px 15px; border-radius: 9px; color: #fff; background: rgba(23, 32, 51, 0.94); box-shadow: 0 8px 24px rgba(0,0,0,.18); font-size: 0.82rem; opacity: 0; transform: translate(-50%, 12px); pointer-events: none; transition: opacity 160ms ease, transform 160ms ease; }
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+@media (max-width: 900px) {
+  .app-shell { display: block; }
+  .workspace-panel { min-height: auto; border-right: 0; border-bottom: 1px solid #d6dae0; }
+  #markdownInput { min-height: 320px; }
+  .preview-panel { height: auto; min-height: 100vh; }
+  .preview-scroll { min-height: 80vh; padding: 24px 12px; }
+}
+
+@media (max-width: 520px) {
+  .workspace-panel { padding: 20px 16px; }
+  .file-card { grid-template-columns: 38px 1fr; }
+  .file-card .secondary-button { grid-column: 1 / -1; }
+  .preview-toolbar { padding: 0 14px; }
+  .eyebrow { display: none; }
+  .spec-strip { grid-template-columns: repeat(2, 1fr); }
+}
+
+@page { size: A4 portrait; margin: 0; }
+
+@media print {
+  html, body { width: 210mm; margin: 0 !important; padding: 0 !important; background: #fff; }
+  .workspace-panel, .preview-toolbar, .toast, .flow-measure { display: none !important; }
+  .app-shell, .preview-panel, .preview-scroll { display: block; width: auto; height: auto; min-height: 0; overflow: visible; padding: 0; background: #fff; }
+  .pages { width: 210mm; margin: 0; }
+  .page-wrap { width: 210mm; height: 297mm; margin: 0; break-after: page; page-break-after: always; }
+  .page-wrap:last-child { break-after: auto; page-break-after: auto; }
+  .page { transform: none; box-shadow: none; }
+}
